@@ -1,18 +1,18 @@
 # import mysql.connector  # need to pip install mysql-connector-python for MySQL 
 # import psycopg2         # need to pip install psycopg2-binary for PostgreSQL 
 import sqlite3
+import User.py
 
-#
 class DatabaseHelper:
-
     # Constructor for DatabaseHelper Object 
     def __init__(self):
         mydb = None
         run = None
 
+
     def connectToDataBase(self):
         """
-            Method to connect to the database. Call this on a new Database Helper object to initialize the database. 
+        Method to connect to the database. Call this on a new Database Helper object to initialize the database. 
         """
         try: 
             self.mydb = sqlite3.connect("local_database.db")
@@ -23,16 +23,27 @@ class DatabaseHelper:
 
     def createTables(self): 
         """
-            Method to create / initialize all tables in the database. If they exist, then they're not touched. 
+        Method to create / initialize all tables in the database. If they exist, then they're not touched. 
         """
         # Create Users Table 
         self.run.execute("""
             CREATE TABLE IF NOT EXISTS Users (
             userID INT AUTO_INCREMENT PRIMARY KEY, 
             username VARCHAR(15) UNIQUE, 
-            password VARCHAR(100)
+            password VARCHAR(100),
+            role VARCHAR(MAX)
             )
-            """)
+        """)
+        
+        self.run.execute("""
+           CREATE TABLE IF NOT EXISTS RoommateProfile (
+            profileID AUTO_INCREMENT PRIMARY KEY, 
+            userID INT, 
+            lifestyle VARCHAR(MAX), 
+            wants VARCHAR(MAX), 
+            FOREIGN KEY userID REFERENCES Users(userID)    
+            )              
+        """)
         
         # Create Conversations Table
         self.run.execute("""
@@ -44,7 +55,7 @@ class DatabaseHelper:
             FOREIGN KEY (user1) REFERENCES Users(userId), 
             FOREIGN KEY (user2) REFERENCES Users(userId)
             )
-            """)
+        """)
         
         # Create Messages Table 
         self.run.execute("""
@@ -54,30 +65,29 @@ class DatabaseHelper:
             time INT, 
             sender VARCHAR(15), 
             conversationID INT,  
-            FOREIGN KEY (ConversationId) REFERENCES Conversations(ConversationId),
-            FOREIGN KEY (Sender) REFERENCES Users(userId)           
+            FOREIGN KEY (conversationId) REFERENCES Conversations(ConversationId),
+            FOREIGN KEY (sender) REFERENCES Users(userId)           
             )
-            """)
+        """)
         
         # Creates Pages Table
         self.run.execute("""
             CREATE TABLE IF NOT EXISTS Pages (
             pageID INT AUTO_INCREMENT PRIMARY KEY, 
             userId VARCHAR(MAX), 
-            role VARCHAR(20),  
             FOREIGN KEY (userId) REFERENCES Users(userId),     
             )
-            """)
+        """)
         
         # Creates Hobbies Table
         self.run.execute("""
             CREATE TABLE IF NOT EXISTS Hobbies (
-            hobbyID INT AUTO_INCREMENT PRIMARY KEY, 
-            pageID INT, 
             title VARCHAR(MAX),
+            hobbyID INT AUTO_INCREMENT, 
+            pageID INT,   
             FOREIGN KEY (pageID) REFERENCES Pages(pageID)        
             )
-            """)
+        """)
         
         # Creates the Progress Table 
         self.run.execute("""
@@ -91,3 +101,26 @@ class DatabaseHelper:
             FOREIGN KEY (pageID) REFERENCES Pages(pageID)
             )     
         """)
+
+        # Creates the Progress Images Table
+        self.run.execute(""" 
+            CREATE TABLE IF NOT EXISTS ProgressImages (
+            imageID INT PRIMARY KEY AUTO_INCREMENT, 
+            imageName VARCHAR(MAX)
+            path VARCHAR(MAX) 
+            progressID INT,
+            FOREIGN KEY (progressID) REFERENCES Progress(progressID)
+            )
+        """)
+    
+
+    def register (User user): 
+        pass
+
+    def login (User user): 
+        pass
+
+
+    def showPage(String username):
+        pass
+

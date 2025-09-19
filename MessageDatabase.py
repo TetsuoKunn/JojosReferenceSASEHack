@@ -1,0 +1,93 @@
+# import mysql.connector  # need to pip install mysql-connector-python for MySQL 
+# import psycopg2         # need to pip install psycopg2-binary for PostgreSQL 
+import sqlite3
+
+#
+class DatabaseHelper:
+
+    # Constructor for DatabaseHelper Object 
+    def __init__(self):
+        mydb = None
+        run = None
+
+    def connectToDataBase(self):
+        """
+            Method to connect to the database. Call this on a new Database Helper object to initialize the database. 
+        """
+        try: 
+            self.mydb = sqlite3.connect("local_database.db")
+            self.run = self.mydb.cursor() 
+        except Exception as e: 
+            print(f"Connection to the Database failed due to {e}")
+
+
+    def createTables(self): 
+        """
+            Method to create / initialize all tables in the database. If they exist, then they're not touched. 
+        """
+        # Create Users Table 
+        self.run.execute("""
+            CREATE TABLE IF NOT EXISTS Users (
+            userID INT AUTO_INCREMENT PRIMARY KEY, 
+            username VARCHAR(15) UNIQUE, 
+            password VARCHAR(100)
+            )
+            """)
+        
+        # Create Conversations Table
+        self.run.execute("""
+            CREATE TABLE IF NOT EXISTS Conversations (
+            conversationID INT AUTO_INCREMENT PRIMARY KEY, 
+            user1 VARCHAR(15), 
+            user2 VARCHAR(15), 
+            UNIQUE(user1, user2), 
+            FOREIGN KEY (user1) REFERENCES Users(userId), 
+            FOREIGN KEY (user2) REFERENCES Users(userId)
+            )
+            """)
+        
+        # Create Messages Table 
+        self.run.execute("""
+            CREATE TABLE IF NOT EXISTS Messages (
+            messageID INT AUTO_INCREMENT PRIMARY KEY, 
+            message VARCHAR(MAX), 
+            time INT, 
+            sender VARCHAR(15), 
+            conversationID INT,  
+            FOREIGN KEY (ConversationId) REFERENCES Conversations(ConversationId),
+            FOREIGN KEY (Sender) REFERENCES Users(userId)           
+            )
+            """)
+        
+        # Creates Pages Table
+        self.run.execute("""
+            CREATE TABLE IF NOT EXISTS Pages (
+            pageID INT AUTO_INCREMENT PRIMARY KEY, 
+            userId VARCHAR(MAX), 
+            role VARCHAR(20),  
+            FOREIGN KEY (userId) REFERENCES Users(userId),     
+            )
+            """)
+        
+        # Creates Hobbies Table
+        self.run.execute("""
+            CREATE TABLE IF NOT EXISTS Hobbies (
+            hobbyID INT AUTO_INCREMENT PRIMARY KEY, 
+            pageID INT, 
+            title VARCHAR(MAX),
+            FOREIGN KEY (pageID) REFERENCES Pages(pageID)        
+            )
+            """)
+        
+        # Creates the Progress Table 
+        self.run.execute("""
+            CREATE TABLE IF NOT EXISTS Progress (
+            progressID INT AUTO_INCREMENT PRIMARY KEY, 
+            hobbyID INT, 
+            pageID INT, 
+            description VARCHAR(MAX), 
+            time DATETIME DEFAULT CURRENT_TIMESTAMP, 
+            FOREIGN KEY (hobbyID) REFERENCES Hobbies(hobbyID), 
+            FOREIGN KEY (pageID) REFERENCES Pages(pageID)
+            )     
+        """)

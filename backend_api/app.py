@@ -7,13 +7,11 @@ import os
 
 load_dotenv("../")
 API_KEY = os.getenv("API_KEY")
-
-app = Flask(__name__)
-
 def security_check(key):
     if(key != API_KEY):
         abort(403)
 
+app = Flask(__name__)
 
 # The following is the easiest way to implement a url that performs CRUD operations
 @app.route("/")
@@ -23,9 +21,6 @@ def hello_world():
     security_check(key)
     return f"hello, {escape(name)}"
 
-#
-# SAFETY PROTOCOL NOT IMPLEMENTED YET PLS WAIT
-#
 
 # @app.route("/<appropriate_url>")
 # def <function_name>():

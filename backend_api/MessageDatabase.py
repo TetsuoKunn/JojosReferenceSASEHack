@@ -47,7 +47,7 @@ class DatabaseHelper:
             country TEXT, 
             state TEXT, 
             city TEXT, 
-            FOREIGN KEY username REFERENCES Users(username)
+            FOREIGN KEY (username) REFERENCES Users(username)
             )              
         """)
         
@@ -58,8 +58,8 @@ class DatabaseHelper:
             username TEXT, 
             role TEXT, 
             datejoined DATETIME, 
-            FOREIGN KEY name REFERENCES Guild(name), 
-            FOREIGN KEY username REFERENCES Users(username)
+            FOREIGN KEY (name) REFERENCES Guild(name), 
+            FOREIGN KEY (username) REFERENCES Users(username)
             )              
         """)
 
@@ -93,7 +93,7 @@ class DatabaseHelper:
         # Creates the Pictures table
         self.run.execute(""" 
             CREATE TABLE IF NOT EXISTS Pictures(
-            pictureID INTEGER PRIMARY KEY AUTOINCREMENT,
+            pictureID INTEGER PRIMARY KEY AUTOINCREMENT
             )
         """)
 
@@ -112,11 +112,11 @@ class DatabaseHelper:
         # Create Messages Table 
         self.run.execute("""
             CREATE TABLE IF NOT EXISTS Messages (
-            messageID INTEGER PRIMARY KEY AUTOINCREMENT
+            messageID INTEGER PRIMARY KEY AUTOINCREMENT,
             message TEXT, 
             time DATETIME, 
             sender TEXT, 
-            conversationID INT,  
+            conversationID INT,
             FOREIGN KEY (conversationId) REFERENCES Conversations(ConversationId),
             FOREIGN KEY (sender) REFERENCES Users(username)           
             )

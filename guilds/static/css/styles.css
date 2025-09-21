@@ -115,7 +115,7 @@ h1 {
 }
 
 .guild-card:hover {
-  background-color: khaki;
+  background-color: rgb(255, 221, 147);
   transform: scale(1.1);
 }
 

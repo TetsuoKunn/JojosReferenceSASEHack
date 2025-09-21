@@ -58,3 +58,4 @@ def messaging_view(request):
 
 def message_view(request):
     return render(request ,"message.html")
+

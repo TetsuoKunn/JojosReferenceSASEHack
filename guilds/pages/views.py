@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from datetime import timedelta
 from guilds.settings import API_KEY
@@ -24,15 +24,17 @@ def register(request):
         lastname = request.POST.get("lastname")
         userid = request.POST.get("userid")
         pw = hashlib.sha256(request.POST.get("password").encode('utf-8')).hexdigest()
-        try:
-            response = requests.get(baseurl+f"/user/register?key={API_KEY}&firstname={firstname}&lastname={lastname}&username={userid}&pw={pw}")
-            response.raise_for_status() # Raise an exception for bad status codes (4xx or 5xx)
-            data = response.json()
-            print(data)
-            index(request)
-        except requests.exceptions.RequestException as e:
-            error = JsonResponse({"error": str(e)}, status=500)
-            context["error"] = error
+        response = requests.get(baseurl+f"/user/register?key={API_KEY}&firstname={firstname}&lastname={lastname}&username={userid}&pw={pw}")
+        response.raise_for_status() # Raise an exception for bad status codes (4xx or 5xx)
+        data = response.json()
+        if data.get("error"):
+            if "UNIQUE" in data.get("error"):
+                context["error"] = "This username is taken"
+                context["firstname_memory"] = firstname
+                context["lastname_memory"] = lastname
+                context["userid_memory"] = userid
+        else:
+            return redirect('index')
     return render(request ,"register.html", context)
 
 def profile_view(request):
@@ -58,4 +60,3 @@ def messaging_view(request):
 
 def message_view(request):
     return render(request ,"message.html")
-

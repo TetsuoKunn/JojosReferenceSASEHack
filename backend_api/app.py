@@ -27,6 +27,8 @@ def hello_world():
     security_check(key)
     return f"hello, {escape(name)}"
 
+
+
 @app.route("/user/register")
 def register():
     key = request.headers.get("X-API-KEY") or request.args.get("key")
@@ -46,6 +48,7 @@ def register():
         return jsonify(data)
     data = {"username" : username}
     return jsonify(data)
+
 
 @app.route("/user/signin")
 def login():
@@ -88,6 +91,62 @@ def guild_create():
         return jsonify(data)
     data = {}
     return jsonify(data)
+
+
+@app.route("/user/profile")
+def UserProfilePage():
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key)
+    username = request.args.get("username")
+    try:
+        rows = db.getAllPostsUser(username)
+
+        data = [
+            {
+                "postID": r[0],
+                "username": r[1],
+                "text": r[2],
+                "pictureID": r[3],
+                "creationDate": r[4],
+                "likes": r[5],
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    return jsonify(data)
+
+
+def GuildProfilePage():
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key)
+    guildname = request.args.get("guildname")
+    try:
+        rows = db.getAllPostsUser(guildname)
+
+        data = [
+            {
+                "postID": r[0],
+                "name": r[1],
+                "text": r[2],
+                "pictureID": r[3],
+                "creationDate": r[4],
+                "likes": r[5],
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    return jsonify(data)
+
 
 @app.route("/post/create")
 def post_create():

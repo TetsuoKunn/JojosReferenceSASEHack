@@ -1,12 +1,18 @@
 from flask import Flask, request, abort
 from markupsafe import escape
-# from MessageDatabase import *
+from MessageDatabase import *
+from datetime import datetime
 # from User import *
 from dotenv import load_dotenv
 import os
 
+# flask --app app run --debug
+
 load_dotenv("../")
 API_KEY = os.getenv("API_KEY")
+db = DatabaseHelper()
+db.connectToDataBase()
+db.createTables()
 def security_check(key):
     if(key != API_KEY):
         abort(403)
@@ -17,10 +23,21 @@ app = Flask(__name__)
 @app.route("/")
 def hello_world():
     key = request.headers.get("X-API-KEY") or request.args.get("key")
-    name = request.args.get("name", "unprovided name")
+    name = request.args.get("name")
     security_check(key)
     return f"hello, {escape(name)}"
 
+@app.route("/user/register")
+def register():
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key)
+    username = request.args.get("username", "unprovided username")
+    firstname = request.args.get("firstname")
+    lastname = request.args.get("lastname")
+    password = request.args.get("pw")
+    joiningDate = datetime.now()
+    db.register(username, firstname, lastname, password, joiningDate)
+    return f"hello, {escape(username)}"
 
 # @app.route("/<appropriate_url>")
 # def <function_name>():

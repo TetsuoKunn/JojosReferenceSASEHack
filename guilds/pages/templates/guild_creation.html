@@ -2,6 +2,91 @@
 
 {% block content %}
 <!--start original content here-->
+<form action = "{% url 'register' %}" method="post" class="signinform">
+    {% csrf_token %}
+<label for="guild_name">Guild Name: </label>
+<input name= "guild_name" id="guild_name" value="{{guild_name_memory}}" required>
+
+<label for="desc">Description: </label>
+<input name="desc" id="desc" value="{{desc_memory}}" required>
+
+<label for="country">Country: </label>
+<select id="country" name="country" required>
+  <option value="dafault"></option>
+</select>
+
+<label for="state">State: </label>
+<select id="state" name="state" required disabled>
+  <option value="dafault">State</option>
+</select>
+
+<label for="city">City: </label>
+<select id="city" name="city" required disabled>
+  <option value="dafault">City</option>
+</select>
+<!-- Script for validating form data in the location pls do not mess with -->
+<script>
+const countriesAPI = "https://countriesnow.space/api/v0.1/countries/positions";
+const statesAPI = "https://countriesnow.space/api/v0.1/countries/states";
+const citiesAPI = "https://countriesnow.space/api/v0.1/countries/state/cities";
+
+const countrySelect = document.getElementById("country");
+const stateSelect = document.getElementById("state");
+const citySelect = document.getElementById("city");
+
+fetch(countriesAPI)
+  .then(res => res.json())
+  .then(data => {
+    data.data.forEach(country => {
+      countrySelect.add(new Option(country.name, country.name));
+    });
+  });
+
+countrySelect.addEventListener("change", () => {
+  stateSelect.innerHTML = '<option value="default">State</option>';
+  citySelect.innerHTML = '<option value="">City</option>';
+  stateSelect.disabled = true;
+  citySelect.disabled = true;
+
+  if (countrySelect.value) {
+    fetch(statesAPI, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ country: countrySelect.value })
+    })
+      .then(res => res.json())
+      .then(data => {
+        data.data.states.forEach(state => {
+          stateSelect.add(new Option(state.name, state.name));
+        });
+        stateSelect.disabled = false;
+      });
+  }
+});
+
+stateSelect.addEventListener("change", () => {
+  citySelect.innerHTML = '<option value="">-- Select City --</option>';
+  citySelect.disabled = true;
+
+  if (stateSelect.value) {
+    fetch(citiesAPI, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        country: countrySelect.value,
+        state: stateSelect.value
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        data.data.forEach(city => {
+          citySelect.add(new Option(city, city));
+        });
+        citySelect.disabled = false;
+      });
+  }
+});
+</script>
 
 <!--end original content here-->
 {% endblock %}

@@ -5,6 +5,7 @@ from guilds.settings import API_KEY
 from django.utils import timezone
 import hashlib
 import requests
+from urllib.parse import urlencode
 
 baseurl = "http://127.0.0.1:5000"
 
@@ -62,7 +63,34 @@ def post_view(request):
     return render(request ,"post.html")
 
 def guild_creation_view(request):
-    return render(request ,"guild_creation.html")
+    if request.session.get("userid") == None:
+        return redirect('signin')
+    context = {}
+    if request.method == "POST":
+        guildname = request.POST.get("guild_name")
+        description = request.POST.get("desc")
+        country = request.POST.get("country")
+        state = request.POST.get("state")
+        city = request.POST.get("city")
+        urlparams = {
+            "key" : API_KEY,
+            "guildname" : guildname,
+            "description" : description,
+            "country" : country,
+            "state" : state,
+            "city" : city,
+            "username" : request.session.get("userid")
+        }
+        response = requests.get(baseurl+f"/guild/register?{urlencode(urlparams)}")
+        response.raise_for_status() # Raise an exception for bad status codes (4xx or 5xx)
+        data = response.json()
+        if data.get("error"):
+            context["guildname_memory"] = guildname
+            context["description_memory"] = description
+            return render(request ,"guild_creation.html", context)
+        else:
+            return redirect('index')
+    return render(request ,"guild_creation.html", context)
 
 def guild_user_view(request):
     return render(request ,"guild_user.html")

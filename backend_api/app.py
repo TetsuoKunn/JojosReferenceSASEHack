@@ -104,3 +104,6 @@ def guild_create():
 # last_name = request.args.get("last", "App")
 # age = request.args.get("age", "unknown")
 # here app and unknown are default values incase the user doesn't enter them
+
+
+

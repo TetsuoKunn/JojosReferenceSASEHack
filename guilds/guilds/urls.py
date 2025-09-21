@@ -26,6 +26,7 @@ urlpatterns = [
     path('profile/', profile_view, name="profile"),
     path("guild/", guild_view, name="guild"),
     path("post/", post_view, name="post"),
+    path("post/create", post_create, name="post_create"),
     path("guild/create/", guild_creation_view, name="guild_create"),
     path("guild/user/", guild_user_view, name="guild_user"),
     path("guild/user/owner/", guild_user_owner_view, name="guild_user_owner"),

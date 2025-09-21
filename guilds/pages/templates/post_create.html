@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!--start original content here-->
+<form action = "{% url 'post_create' %}" method="post" class="signinform">
+    {% csrf_token %}
+    <label for="desc">Text: </label>
+    <input name="text" id="text" value="{{text_memory}}" type="text" required>
+    <label for="pic">Image: </label>
+    <input name="pic" id="pic" type="file" accept="image/*">
+    <label for="guild">Guilds : </label>
+    <select name="guild" id="guild">
+        <option>None</option>
+    </select>
+    <input type="submit" value="Create Post">
+</form>
+
+
+
+<!--end original content here-->
+{% endblock %}

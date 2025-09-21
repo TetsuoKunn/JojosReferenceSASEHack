@@ -56,6 +56,29 @@ def register(request):
 def profile_view(request):
     return render(request ,"profile.html")
 
+def post_create(request):
+    context = {}
+    if request.session.get("userid") == None:
+        return redirect('signin')
+    context = {}
+    if request.method == "POST":
+        text = request.POST.get("text")
+        pic = request.POST.get("pic")
+        guild = request.POST.get("guild")
+        urlparams = {
+            "key" : API_KEY,
+            "text" : text,
+            "username" : request.session.get("userid")
+        }
+        if pic != "":
+            urlparams["picture"] = pic
+        if guild != "None":
+            urlparams["guildname"] = guild
+
+
+        print(urlparams)
+    return render(request, "post_create.html",context)
+
 def guild_view(request):
     return render(request ,"guild.html")
 

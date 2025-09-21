@@ -89,6 +89,27 @@ def guild_create():
     data = {}
     return jsonify(data)
 
+@app.route("/post/create")
+def post_create():
+    data = {}
+    key = request.args.get("key")
+    security_check(key)
+    username = request.args.get("username")
+    guildName = request.args.get("guildname", "-1")
+    pictureID = request.args.get("picture", "-1")
+    creationDate = datetime.now()
+    text = request.args.get("text")
+    try:
+        db.newPost(username, guildName, text, creationDate, pictureID)
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    data = {}
+    return jsonify(data)
+
 # @app.route("/<appropriate_url>")
 # def <function_name>():
 #     variable = request.args.get("variable", "default")
@@ -104,6 +125,3 @@ def guild_create():
 # last_name = request.args.get("last", "App")
 # age = request.args.get("age", "unknown")
 # here app and unknown are default values incase the user doesn't enter them
-
-
-

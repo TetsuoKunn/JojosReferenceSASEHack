@@ -11,15 +11,31 @@ baseurl = "http://127.0.0.1:5000"
 # Create your views here.
 def index(request):
     token = request.session.get("userid")
-    print(token)
     return render(request ,"index.html")
 
 def signin(request):
-    return render(request, "signin.html")
+    context = {}
+    if request.method == "POST":
+        userid = request.POST.get("userid")
+        context["userid_memory"] = userid
+        pw = hashlib.sha256(request.POST.get("password").encode('utf-8')).hexdigest()
+        response = requests.get(baseurl+f"/user/signin?key={API_KEY}&username={userid}&pw={pw}")
+        response.raise_for_status() # Raise an exception for bad status codes (4xx or 5xx)
+        data = response.json()
+        if data.get("error"):
+            if "UNIQUE" in data.get("error"):
+                context["error"] = "This username is taken"
+                context["userid_memory"] = userid
+        else:
+            if data.get("username") != None:
+                print(data.get("username"))
+                return redirect('index')
+            context["pw"] = "Your Password is incorrect."
+    return render(request, "signin.html", context)
 
 def register(request):
+    context = {}
     if request.method == "POST":
-        context = {}
         firstname = request.POST.get("firstname")
         lastname = request.POST.get("lastname")
         userid = request.POST.get("userid")
@@ -34,7 +50,7 @@ def register(request):
                 context["lastname_memory"] = lastname
                 context["userid_memory"] = userid
         else:
-            return redirect('index')
+            return redirect('signin')
     return render(request ,"register.html", context)
 
 def profile_view(request):

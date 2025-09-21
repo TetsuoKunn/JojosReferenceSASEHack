@@ -47,6 +47,26 @@ def register():
     data = {"username" : username}
     return jsonify(data)
 
+@app.route("/user/signin")
+def login():
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key)
+    username = request.args.get("username")
+    password = request.args.get("pw")
+    try:
+        true = db.login(username, password)
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    if true:
+        data = {"username" : username}
+    else:
+        data = {}
+    return jsonify(data)
+
 # @app.route("/<appropriate_url>")
 # def <function_name>():
 #     variable = request.args.get("variable", "default")

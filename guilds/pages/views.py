@@ -15,28 +15,28 @@ def signin(request):
     return render(request, "signin.html")
 
 def register(request):
-    pass
+    return render(request ,"register.html")
 
 def profile_view(request):
-    pass
+    return render(request ,"profile.html")
 
 def guild_view(request):
-    pass
+    return render(request ,"guild.html")
 
 def post_view(request):
-    pass
+    return render(request ,"post.html")
 
 def guild_creation_view(request):
-    pass
+    return render(request ,"guild_creation.html")
 
 def guild_user_view(request):
-    pass
+    return render(request ,"guild_user.html")
 
 def guild_user_owner_view(request):
-    pass
+    return render(request ,"guild_user_owner.html")
 
 def messaging_view(request):
-    pass
+    return render(request ,"messaging.html")
 
 def message_view(request):
-    pass
+    return render(request ,"message.html")

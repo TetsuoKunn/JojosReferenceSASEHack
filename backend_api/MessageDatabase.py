@@ -1,7 +1,6 @@
 # import mysql.connector  # need to pip install mysql-connector-python for MySQL 
 # import psycopg2         # need to pip install psycopg2-binary for PostgreSQL 
 import sqlite3
-import User.py
 
 class DatabaseHelper:
     # Constructor for DatabaseHelper Object 
@@ -28,9 +27,11 @@ class DatabaseHelper:
         # Create Users Table 
         self.run.execute("""
             CREATE TABLE IF NOT EXISTS Users (
-            userID INT AUTO_INCREMENT PRIMARY KEY, 
-            username VARCHAR(15) UNIQUE, 
-            password VARCHAR(100),
+            userID INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE, 
+            firstname TEXT, 
+            lastname TEXT,
+            password TEXT,
             joiningDate DATETIME
             )
         """)
@@ -38,9 +39,9 @@ class DatabaseHelper:
         # Creates Guild table 
         self.run.execute("""
            CREATE TABLE IF NOT EXISTS Guild (
-            guildID INT AUTO_INCREMENT PRIMARY KEY, 
+            guildID INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT, 
-            username VARCHAR(15), 
+            username TEXT, 
             creationDate DATETIME, 
             description TEXT,
             country TEXT, 
@@ -54,8 +55,8 @@ class DatabaseHelper:
         self.run.execute(""" 
            CREATE TABLE IF NOT EXISTS GuildUserList (
             name TEXT, 
-            username VARCHAR(15), 
-            role VARCHAR(100), 
+            username TEXT, 
+            role TEXT, 
             datejoined DATETIME, 
             FOREIGN KEY name REFERENCES Guild(name), 
             FOREIGN KEY username REFERENCES Users(username)
@@ -65,68 +66,68 @@ class DatabaseHelper:
         # Creates the Post Table
         self.run.execute("""
            CREATE TABLE IF NOT EXISTS Posts (
-            postID INT AUTO_INCREMENT PRIMARY KEY, 
-            username VARCHAR(15), 
-            guildID INT DEFAULT -1, 
+            postID INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT, 
+            name TEXT, 
             text TEXT, 
             pictureID INT, 
             creationDate DATETIME, 
             likes INT,
             FOREIGN KEY (username) REFERENCES Users(username), 
-            FOREIGN KEY (guildID) REFERENCES Guild(guildID), 
-            FOREIGN KEY (pictureID) REFERENCES Pictures(pictureID), 
+            FOREIGN KEY (name) REFERENCES Guild(name), 
+            FOREIGN KEY (pictureID) REFERENCES Pictures(pictureID)
             )             
         """)
 
         # Creates the Comments Table
         self.run.execute("""
            CREATE TABLE IF NOT EXISTS Comments (
-            commentID INT AUTO_INCREMENT PRIMARY KEY, 
+            commentID INTEGER PRIMARY KEY AUTOINCREMENT,
             text TEXT, 
             postID INT, 
             creationDate DATETIME, 
-            FOREIGN KEY (userID) REFERENCES Posts(postID), 
+            FOREIGN KEY (postID) REFERENCES Posts(postID)
             )             
         """)
 
         # Creates the Pictures table
         self.run.execute(""" 
-            CREATE TABLE IF NOT EXISTS ProgressImages (
-            pictureID INT PRIMARY KEY AUTO_INCREMENT
+            CREATE TABLE IF NOT EXISTS Pictures(
+            pictureID INTEGER PRIMARY KEY AUTOINCREMENT,
             )
         """)
 
         # Create Conversations Table
         self.run.execute("""
             CREATE TABLE IF NOT EXISTS Conversations (
-            conversationID INT AUTO_INCREMENT PRIMARY KEY, 
-            user1 VARCHAR(15), 
-            user2 VARCHAR(15), 
+            conversationID INTEGER PRIMARY KEY AUTOINCREMENT,
+            user1 TEXT, 
+            user2 TEXT, 
             UNIQUE(user1, user2), 
-            FOREIGN KEY (user1) REFERENCES Users(userId), 
-            FOREIGN KEY (user2) REFERENCES Users(userId)
+            FOREIGN KEY (user1) REFERENCES Users(username), 
+            FOREIGN KEY (user2) REFERENCES Users(username)
             )
         """)
         
         # Create Messages Table 
         self.run.execute("""
             CREATE TABLE IF NOT EXISTS Messages (
-            messageID INT AUTO_INCREMENT PRIMARY KEY, 
+            messageID INTEGER PRIMARY KEY AUTOINCREMENT
             message TEXT, 
-            time INT, 
-            sender VARCHAR(15), 
+            time DATETIME, 
+            sender TEXT, 
             conversationID INT,  
             FOREIGN KEY (conversationId) REFERENCES Conversations(ConversationId),
-            FOREIGN KEY (sender) REFERENCES Users(userId)           
+            FOREIGN KEY (sender) REFERENCES Users(username)           
             )
         """)
 
     
-    def register(self, username, password, joiningDate): 
+    def register(self, username, firstname, lastname, password, joiningDate): 
         """"
         Function to make a new user. 
         """
-        self.run.execute(f"INSERT INTO Users (username, password, joiningDate) VALUES ({username}, {password}), {joiningDate}")
+        self.run.execute(f"INSERT INTO Users (username, firstname, lastname, password, joiningDate) VALUES (?, ?, ?, ?, ?)", (username, firstname, lastname, password, joiningDate))
         self.mydb.commit()
         
 
@@ -144,7 +145,7 @@ class DatabaseHelper:
         """
         Function to update the Role of a person.
         """
-        self.run.execute(f"UPDATE GuildUserList SET role = ? WHERE username = ? AND guildName = ?", (role, username, guildName))
+        self.run.execute(f"UPDATE GuildUserList SET role = ? WHERE username = ? AND name = ?", (role, username, guildName))
         self.mydb.commit()
 
 
@@ -160,7 +161,7 @@ class DatabaseHelper:
         """
         Function to register a new guild. 
         """
-        self.run.execute("INSERT INTO Guild (guildName, username, creationDate, description, country, state, city) VALUES (?, ?, ?, ?, ?, ?, ?)", (guildName, username, creationDate, description, country, state, city))
+        self.run.execute("INSERT INTO Guild (name, username, creationDate, description, country, state, city) VALUES (?, ?, ?, ?, ?, ?, ?)", (guildName, username, creationDate, description, country, state, city))
         self.mydb.commit()
         self.updateRole(username, guildName, "Owner")
 
@@ -171,9 +172,10 @@ class DatabaseHelper:
         """
         self.run.execute(
             """
-            SELECT username, role, datejoined
-            FROM GuildUserList
-            WHERE guildName = ?
+            SELECT gul.username, u.firstname, u.lastname, gul.role, gul.datejoined
+            FROM GuildUserList gul 
+            INNER JOIN Users u ON gul.username = u.username
+            WHERE gul.name = ?
             """, (guildName))
         users = self.run.fetchall()
 
@@ -233,39 +235,116 @@ class DatabaseHelper:
         Creates a new post in the Posts table. 
         """
         self.run.execute("""
-            INSERT INTO Posts (username, )
-        """)
+            INSERT INTO Posts (username, guildName, text, creationDate, pictureID)
+            VALUES (?, ?, ?, ?, ?)
+        """, (username, guildName, text, creationDate, pictureID))
+        self.mydb.commit()
 
 
     def likePost(self, postID): 
         """
         Allows you to like a post. 
         """
-    
+        self.run.execute(f"UPDATE Posts SET likes = likes + 1 WHERE postID = ?", (postID, ))
+        self.mydb.commit()
+        
 
     def getAllPostsUser(self, username): 
         """
         Returns all posts under a user. 
         """
+        self.run.execute(f"""
+            SELECT postID, name, text, pictureID, creationDate, likes
+            FROM Posts 
+            WHERE username = ?
+        """, (username,))
+        posts = self.run.fetchall()
+
+        return posts
     
 
     def getAllPostsGuild(self, guildName): 
         """
         Returns all posts under a guild. 
         """
+        self.run.execute(f"""
+            SELECT postID, username, text, pictureID, creationDate, likes
+            FROM Posts 
+            WHERE name = ?
+        """, (guildName,))
+        posts = self.run.fetchall()
 
+        return posts
+    
 
     def newConversation(self, user1, user2): 
         """
         Creates a conversation between two people. 
         """
+        try: 
+            self.run.execute(f"""
+                INSERT INTO Conversations (user1, user2)
+                VALUES (?, ?)
+                """, (user1, user2))
+            
+            self.mydb.commit()
+        except sqlite3.IntegrityError: 
+            print("uh oh spaghetti o this already exists")
 
 
-    def newMessage(self, conversationID, sender, receiver, date, message): 
+    def newMessage(self, conversationID, sender, date, message): 
         """
         Creates a new message within a conversation between two people. 
         """
+        self.run.execute("""
+            INSERT INTO Messages (conversationID, sender, time, message)
+            VALUES (?, ?, ?, ?)
+        """, (conversationID, sender, date, message))
+
+        self.mydb.commit()
+
+
+    def getConversations(self, user1):
+        """
+        Shows all conversations of a person
+        """
+        self.run.execute("""
+            SELECT conversationID,
+            CASE
+            WHEN user1 = ? THEN user2
+            ELSE user1
+            END AS other_user
+            FROM Conversations 
+            WHERE user1 = ? OR user2 = ?
+        """, (user1, user1, user1))
+
+        return self.run.fetchall()
         
+
+    def getMessages(self, user1, user2):
+        """
+        Shows all messages between two people. 
+        """
+        self.run.execute("""
+            SELECT conversationID
+            FROM Conversations
+            WHERE (user1 = ? AND user2 = ?) OR (user1 = ? AND user2 = ?)
+        """, (user1, user2, user2, user1))
+        
+        result = self.run.fetchone()
+        if not result:
+            return []  
+        conversation_id = result[0]
+
+        self.run.execute("""
+            SELECT messageID, sender, message, time
+            FROM Messages 
+            WHERE conversationID = ?
+            ORDER BY time ASC
+        """, (conversation_id,))
+
+        return self.run.fetchall()
+
     
 
     

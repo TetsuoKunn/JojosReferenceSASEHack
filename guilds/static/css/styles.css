@@ -1,0 +1,159 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navbar container */
+#navbar {
+    width: 100%;
+    background: #fcfcfc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: relative;
+    color: #4b4b4b;
+}
+
+/* Keep hidden unless collapsed  */
+.menu {
+    margin-top: 20px;
+    position: fixed;
+    top: 0;
+    left: -250px;           /* hidden off-screen */
+    width: 220px;
+    height: 100vh;
+    background: #fcfcfc;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: left 0.3s ease;
+    z-index: 999;
+}
+
+/* Show menu when checkbox is checked */
+#menu-toggle:checked ~ .menu {
+    left: 0;
+}
+
+/* Links inside sidebar */
+#navbar a {
+    display: block;
+    color: #727171;
+    text-decoration: none;
+    margin: 20px 0;
+    transition: 0.3s;
+    font-size: 20px;
+}
+
+#navbar a:hover {
+    padding-left: 10px;
+    background: #ffe5e5;
+    color: white;
+}
+
+/* Navbar brand/title */
+.nav-head {
+    color: rgb(119, 68, 76);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 20px;
+}
+
+/* Hamburger icon */
+.collapse {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* Hide checkbox */
+#menu-toggle {
+    display: none;
+}
+
+/* Page content spacing */
+h1 {
+    margin-left: 10%;
+}
+
+.feed-container {
+  background: rgb(209, 174, 174);
+  margin:0 auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*guild cards*/
+
+.guild-container {
+  display: flex;
+  flex-direction: column; /* vertical stack */
+  gap: 20px;              /* spacing between cards */
+  padding: 20px;
+}
+
+.guild-card {
+  background-color: white;
+  max-width: 400px;
+  padding: 40px;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px gray;
+  transition: transform 0.3s, background-color 0.3s ease
+}
+
+.guild-card:hover {
+  background-color: khaki;
+  transform: scale(1.1);
+}
+
+
+.about {
+  font-size: 1.2em;
+  color: gray;
+  margin-bottom: 20px;
+}
+
+.guild-cardlinks {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.guild-cardlinks a {
+  text-decoration: none;
+  font-size: 1em;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  background-color: midnightblue;
+  transition: background-color 0.3s ease;
+}
+
+.guild-cardlinks a:hover {
+  background-color: orangered;
+}
+
+.guild-cardlinks a:active {
+  background-color: midnightblue;
+}
+
+.guild-cardlinks a:focus {
+  outline: 2px solid yellow;
+}
+
+.guild-cardlinks a:visited {
+  color: crimson;
+}

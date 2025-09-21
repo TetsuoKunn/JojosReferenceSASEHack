@@ -38,3 +38,9 @@ Comment
 
 Messaging
 up to conrad
+
+Function List
+----
+signin - based off of username and password and returns the UserID
+register - register a person with a set username and password and returns the UserID
+guild_creation - will take the userID as an arg along with other general stuff to make a guild with user as the owner and add that user in the guild list as a moderator

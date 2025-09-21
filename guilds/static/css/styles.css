@@ -82,6 +82,9 @@ h1 {
   margin:0 auto;
 }
 
+h1 {
+  margin-top: 5%;
+}
 
 
 
@@ -89,8 +92,17 @@ h1 {
 
 
 
+/*home page*/
+#hello {
+  margin-left: 5%;
+  margin-top: 5%;
+  color: orange;
 
+}
 
+#hello::before {
+  content: " 👋 ";
+}
 
 
 
@@ -105,6 +117,12 @@ h1 {
 }
 
 .guild-card {
+  display: flex;
+  height: 10%;
+  width: 100%;
+  flex-direction: column; /* vertical stack */
+  gap: 20px;              /* spacing between cards */
+  padding: 20px;
   background-color: white;
   max-width: 400px;
   padding: 40px;
@@ -156,4 +174,70 @@ h1 {
 
 .guild-cardlinks a:visited {
   color: crimson;
+}
+
+/*profile */
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  padding: 40px 100px ;
+  background: pink;
+  align-items: center;
+  gap: 25px;
+}
+
+.user-guilds{
+  display: flex;
+  flex-direction: row;
+}
+
+
+/*posts */
+
+.posts-container {
+  display: flex;
+  flex-direction: column; 
+  gap: 20px;             
+  padding: 20px;
+}
+.post-card {
+  background-color: rgb(249, 245, 245);
+  width: 95%;
+  padding: 40px;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px gray;
+  transition: transform 0.3s, background-color 0.3s ease
+}
+
+.link-to-profile {
+  text-decoration: none;
+  color: black;
+}
+/*Message*/
+
+.message-container {
+  display: flex;
+  flex-direction: column; /* vertical stack */
+  gap: 20px;              /* spacing between cards */
+  padding: 30px;
+  margin: 10px;
+}
+
+.message-card {
+  display: flex;
+  flex-direction: column; 
+  width: 100%;            
+  background-color: white;  
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.message-card:hover {
+  background-color: rgb(255, 239, 238);
+  transition: background-color 0.3s ease;
 }

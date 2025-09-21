@@ -254,10 +254,10 @@ class DatabaseHelper:
         Returns all posts under a user.
         """
         self.run.execute(f"""
-            SELECT postID, name, text, pictureID, creationDate, likes
+            SELECT postID, username, text, pictureID, creationDate, likes
             FROM Posts
             WHERE username = ?
-        """, (username,))
+        """, (username))
         posts = self.run.fetchall()
 
         return posts
@@ -268,10 +268,10 @@ class DatabaseHelper:
         Returns all posts under a guild.
         """
         self.run.execute(f"""
-            SELECT postID, username, text, pictureID, creationDate, likes
+            SELECT postID, name, text, pictureID, creationDate, likes
             FROM Posts
             WHERE name = ?
-        """, (guildName,))
+        """, (guildName))
         posts = self.run.fetchall()
 
         return posts

@@ -2,6 +2,21 @@
 
 {% block content %}
 <!--start original content here-->
+<form action = "{% url 'register' %}" method="post" class="registerform">
+    {% csrf_token %}
+<label for="firstname">Firstname: </label>
+<input name= "firstname" id="firstname" value="{{firstname_memory}}" required>
 
+<label for="lastname">Lastname: </label>
+<input name="lastname" id="lastname" value="{{lastname_memory}}" required>
+
+<label for="userid">User ID: </label>
+<input name="userid" id="userid" value="{{userid_memory}}" required>
+
+<label for="password">Password: </label>
+<input type="password" name="password" id="password" value="{{password_memory}}" required>
+
+<input type="submit" value="Register">
+</form>
 <!--end original content here-->
 {% endblock %}

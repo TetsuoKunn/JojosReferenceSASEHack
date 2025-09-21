@@ -71,6 +71,10 @@ class Post:
         self.user_id = None
 
 
+    def delete_guild_id(self):
+        self.guild_id = -1
+
+
     def delete_text(self):
         self.text = None
 
@@ -98,6 +102,6 @@ class Post:
 
     def to_json(self):
         """Return JSON string"""
-        
+
         return json.dumps(self.to_dict())
 

@@ -301,3 +301,47 @@ font-size: 1.5rem;
 .signinform input[type="submit"]:hover {
   background: white;
 }
+
+
+/*register*/
+
+.registerform {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 70vw;
+  margin: 50px auto;
+  padding: 60px 60px 10px 60px;
+  background-color: #fee7e7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+
+}
+
+
+.registerform input[id="userid"],
+.registerform input[id="password"],
+.registerform input[id="firstname"],
+.registerform input[id="lastname"]
+ {
+  width: 100%;    
+  max-width: 500px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin: auto;
+}
+
+.registerform input[type="submit"] {
+background: rgb(201, 235, 201);
+border: 1px solid green;
+width: 200px;
+max-width: 200px;
+margin: 10px auto;
+padding: 15px;
+border-radius: 8px;
+font-size: 1.5rem;
+}
+.registerform input[type="submit"]:hover {
+  background: white;
+}

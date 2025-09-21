@@ -1,0 +1,40 @@
+User
+- UserID (PK)
+- username
+- password
+- joiningDate
+
+Guild
+- GuildID (PK)
+- Owner [will be UserID of owner]
+- creationdate
+- description
+- guild_name
+
+GuildUserList
+- GuildID (FK)
+- UserID (FK)
+- Role
+- dateJoined
+
+TimedGuildRole
+- GuildID (FK)
+- Role
+
+Post
+- UserID
+- GuildID (default = -1)
+- PostID (PK)
+- text
+- pictureID (FK)
+- creationDate
+
+pictures
+- pictureID (PK)
+
+Comment
+- PostID (FK)
+- text
+
+Messaging
+up to conrad

@@ -1,4 +1,4 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort, jsonify
 from markupsafe import escape
 from MessageDatabase import *
 from datetime import datetime
@@ -31,13 +31,21 @@ def hello_world():
 def register():
     key = request.headers.get("X-API-KEY") or request.args.get("key")
     security_check(key)
-    username = request.args.get("username", "unprovided username")
+    username = request.args.get("username")
     firstname = request.args.get("firstname")
     lastname = request.args.get("lastname")
     password = request.args.get("pw")
     joiningDate = datetime.now()
-    db.register(username, firstname, lastname, password, joiningDate)
-    return f"hello, {escape(username)}"
+    try:
+        db.register(username, firstname, lastname, password, joiningDate)
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    data = {"username" : username}
+    return jsonify(data)
 
 # @app.route("/<appropriate_url>")
 # def <function_name>():

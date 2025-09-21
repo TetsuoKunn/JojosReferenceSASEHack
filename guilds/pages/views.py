@@ -1,8 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from datetime import timedelta
+from guilds.settings import API_KEY
 from django.utils import timezone
+import hashlib
+import requests
 
+baseurl = "http://127.0.0.1:5000"
 
 # Create your views here.
 def index(request):
@@ -11,11 +15,25 @@ def index(request):
     return render(request ,"index.html")
 
 def signin(request):
-    request.session['userid'] = "112255"
     return render(request, "signin.html")
 
 def register(request):
-    return render(request ,"register.html")
+    if request.method == "POST":
+        context = {}
+        firstname = request.POST.get("firstname")
+        lastname = request.POST.get("lastname")
+        userid = request.POST.get("userid")
+        pw = hashlib.sha256(request.POST.get("password").encode('utf-8')).hexdigest()
+        try:
+            response = requests.get(baseurl+f"/user/register?key={API_KEY}&firstname={firstname}&lastname={lastname}&username={userid}&pw={pw}")
+            response.raise_for_status() # Raise an exception for bad status codes (4xx or 5xx)
+            data = response.json()
+            print(data)
+            index(request)
+        except requests.exceptions.RequestException as e:
+            error = JsonResponse({"error": str(e)}, status=500)
+            context["error"] = error
+    return render(request ,"register.html", context)
 
 def profile_view(request):
     return render(request ,"profile.html")

@@ -8,7 +8,7 @@ Guild
 - GuildID (PK)
 - Owner [will be UserID of owner]
 - creationdate
-- description
+- descriptionsignin
 - guild_name
 
 GuildUserList

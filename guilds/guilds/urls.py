@@ -20,5 +20,16 @@ from pages.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name="index")
+    path('', index, name="index"),
+    path('signin/' ,signin, name="signin"),
+    path('register/', register, name="register"),
+    path('profile/', profile_view, name="profile"),
+    path("guild/", guild_view, name="guild"),
+    path("post/", post_view, name="post"),
+    path("guild/create/", guild_creation_view, name="guild_create"),
+    path("guild/user/", guild_user_view, name="guild_user"),
+    path("guild/user/owner/", guild_user_owner_view, name="guild_user_owner"),
+    path("messages/", messaging_view, name="messages"),
+    path("message/", message_view, name="message"),
+
 ]

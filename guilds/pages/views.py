@@ -1,16 +1,20 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from datetime import timedelta
+from django.utils import timezone
+
 
 # Create your views here.
 def index(request):
+    token = request.session.get("userid")
+    print(token)
     return render(request ,"index.html")
 
 def signin(request):
-    pass
+    request.session['userid'] = "112255"
+    return render(request, "signin.html")
 
 def register(request):
-    pass
-
-def search(request):
     pass
 
 def profile_view(request):

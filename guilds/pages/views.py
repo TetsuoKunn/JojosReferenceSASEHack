@@ -10,7 +10,6 @@ baseurl = "http://127.0.0.1:5000"
 
 # Create your views here.
 def index(request):
-    token = request.session.get("userid")
     return render(request ,"index.html")
 
 def signin(request):
@@ -28,7 +27,7 @@ def signin(request):
                 context["userid_memory"] = userid
         else:
             if data.get("username") != None:
-                print(data.get("username"))
+                request.session["userid"] = data.get("username")
                 return redirect('index')
             context["pw"] = "Your Password is incorrect."
     return render(request, "signin.html", context)

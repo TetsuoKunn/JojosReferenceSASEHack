@@ -67,6 +67,28 @@ def login():
         data = {}
     return jsonify(data)
 
+@app.route("/guild/register")
+def guild_create():
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key)
+    username = request.args.get("username")
+    guildName = request.args.get("guildname")
+    description = request.args.get("description")
+    country = request.args.get("country")
+    state = request.args.get("state")
+    city = request.args.get("city")
+    creationDate = datetime.now()
+    try:
+        db.registerGuild(guildName, username, creationDate, description, country, state, city)
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    data = {}
+    return jsonify(data)
+
 # @app.route("/<appropriate_url>")
 # def <function_name>():
 #     variable = request.args.get("variable", "default")

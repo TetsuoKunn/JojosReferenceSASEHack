@@ -492,7 +492,6 @@ font-size: 1.5rem;
 
 .role.member {
   color: rgb(112, 64, 64);
-
   padding: 4px 8px;
   border-radius: 5px;
   font-weight: bold;
@@ -502,3 +501,27 @@ font-size: 1.5rem;
 .guild-user-tab {
   margin-left: 40px;
 }
+
+
+ .search-field {
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;       
+  padding: 10px 15px;
+  background-color: #ffe5e5;
+  border-radius: 50px;     
+  max-width: 700px;       
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.guild-search-bar select {
+  padding: 10px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  flex: 1 1 150px;
+  align-items: center;
+
+}
+

@@ -21,7 +21,7 @@
     margin-top: 20px;
     position: fixed;
     top: 0;
-    left: -250px;           /* hidden off-screen */
+    left: -250px;         
     width: 220px;
     height: 100vh;
     background: #fcfcfc;
@@ -142,8 +142,22 @@ h1 {
 .add-post:hover {
     transform: scale(1.2);
     background-color: orange;
+
+}
+.post-links a{
+  text-decoration: none;
+  color: rgb(255, 174, 23);
+  padding: 20px;
+  margin-top: 10px;
+}
+.post-links a:hoover{
+  color: rgb(255, 255, 255);
 }
 
+.post-links {
+  margin-top: 10px;
+  padding-top:20px;
+}
 
 /*guild cards*/
 
@@ -270,7 +284,28 @@ h1 {
   margin-top: 5px;
   color: rgb(68, 47, 47);
   font-size: 20px;
+
+
+
 }
+
+
+.edit-info {
+background: rgb(245, 241, 214);
+border: 1px solid green;
+width: 80px;
+max-width: 200px;
+margin: 10px auto;
+padding: 15px;
+border-radius: 8px;
+font-size: 1rem;
+}
+
+.edit-info:hover {
+  background: white;
+}
+
+
 /*posts */
 
 .posts-container {
@@ -403,4 +438,67 @@ font-size: 1.5rem;
 }
 .registerform input[type="submit"]:hover {
   background: white;
+}
+
+
+/*guild-user*/
+
+.guild-table {
+  width: 90%;
+  margin: 30px auto;
+  border-collapse: collapse;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.guild-table thead {
+  background-color: #ffcccb;
+}
+
+.guild-table th, 
+.guild-table td {
+  padding: 12px 20px;
+  text-align: left;
+}
+
+.guild-table tbody tr:nth-child(even) {
+  background-color: #fff0f0;
+}
+
+.guild-table tbody tr:hover {
+  background-color: #ffe5e5;
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
+}
+
+.role.owner {
+  color: rgb(112, 64, 64);
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.role.moderator {
+  color: rgb(112, 64, 64);
+ 
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.role.member {
+  color: rgb(112, 64, 64);
+
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.guild-user-tab {
+  margin-left: 40px;
 }

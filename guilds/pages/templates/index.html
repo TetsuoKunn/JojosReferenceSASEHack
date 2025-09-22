@@ -4,6 +4,21 @@
 <!--start original content here-->
 <div class="home-head-panel">
     <h1>Home</h1>
+
+     <div class="search-field">
+    <select name="country">
+      <option value="">Country</option>
+    </select>
+    <select name="state" >
+      <option value="">State</option>
+    </select>
+    <select name="city">
+      <option value="">City</option>
+    </select>
+  </div>
+  <button type="submit">Search</button>
+
+
     <button class="add-post">+</button>
 </div>
 <h2><div id="hello">Welcome {{ request.session.userid }}</div>

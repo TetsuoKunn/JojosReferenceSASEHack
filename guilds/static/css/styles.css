@@ -502,3 +502,44 @@ font-size: 1.5rem;
 .guild-user-tab {
   margin-left: 40px;
 }
+
+
+.guild-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  background-color: #ffe5e5;
+  border-radius: 50px;
+  max-width: 900px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.guild-search-bar .search-field {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.guild-search-bar input,
+.guild-search-bar select {
+  padding: 10px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  flex: 1 1 150px;
+}
+
+.guild-search-bar button {
+  padding: 10px 25px;
+  border-radius: 25px;
+  border: none;
+  background-color: #4b9ce2;
+  color: white;
+  cursor: pointer;
+}
+
+.guild-search-bar button:hover {
+  background-color: #357ab7;
+}

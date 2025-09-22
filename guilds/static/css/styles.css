@@ -507,7 +507,9 @@ font-size: 1.5rem;
   display: flex;
   justify-content: center;  
   align-items: center;
+  flex-direction: column;
   gap: 10px;
+ 
   margin: 20px auto;       
   padding: 10px 15px;
   background-color: #ffe5e5;
@@ -519,9 +521,9 @@ font-size: 1.5rem;
 .guild-search-bar select {
   padding: 10px;
   border-radius: 25px;
+  width: 100%;
   border: 1px solid #ccc;
   flex: 1 1 150px;
   align-items: center;
-
+  
 }
-

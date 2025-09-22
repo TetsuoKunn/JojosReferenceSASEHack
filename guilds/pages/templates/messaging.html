@@ -2,18 +2,82 @@
 
 {% block content %}
 <!--start original content here-->
-<h1>Messages</h1>
-<div class="message-container">
-    <div class="message-card">
-        <h2> Name 1</h2>
-        <p class="about">This is a short description about the guild.</p>
-    </div>
-
-    <div class="message-card">
-        <h2> Name 2</h2>
-        <p class="about">Another guild description goes here.</p>
-    </div>
+<h1>Search</h1>
+<div class="search-field">
+  <select id="country" name="country">
+    <option value="">Country</option>
+  </select>
+  <select id="state" name="state" disabled>
+    <option value="">State</option>
+  </select>
+  <select id="city" name="city" disabled>
+    <option value="">City</option>
+  </select> 
 </div>
+
+  <script>
+const countriesAPI = "https://countriesnow.space/api/v0.1/countries/positions";
+const statesAPI = "https://countriesnow.space/api/v0.1/countries/states";
+const citiesAPI = "https://countriesnow.space/api/v0.1/countries/state/cities";
+
+const countrySelect = document.getElementById("country");
+const stateSelect = document.getElementById("state");
+const citySelect = document.getElementById("city");
+
+fetch(countriesAPI)
+  .then(res => res.json())
+  .then(data => {
+    data.data.forEach(country => {
+      countrySelect.add(new Option(country.name, country.name));
+    });
+  });
+
+
+countrySelect.addEventListener("change", () => {
+  stateSelect.innerHTML = '<option value="default">State</option>';
+  citySelect.innerHTML = '<option value="">City</option>';
+  stateSelect.disabled = true;
+  citySelect.disabled = true;
+
+  if (countrySelect.value) {
+    fetch(statesAPI, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ country: countrySelect.value })
+    })
+      .then(res => res.json())
+      .then(data => {
+        data.data.states.forEach(state => {
+          stateSelect.add(new Option(state.name, state.name));
+        });
+        stateSelect.disabled = false;
+      });
+  }
+});
+
+stateSelect.addEventListener("change", () => {
+  citySelect.innerHTML = '<option value="">-- Select City --</option>';
+  citySelect.disabled = true;
+
+  if (stateSelect.value) {
+    fetch(citiesAPI, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        country: countrySelect.value,
+        state: stateSelect.value
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        data.data.forEach(city => {
+          citySelect.add(new Option(city, city));
+        });
+        citySelect.disabled = false;
+      });
+  }
+});
+</script>
 
 <!--end original content here-->
 {% endblock %}

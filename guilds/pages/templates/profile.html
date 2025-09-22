@@ -11,11 +11,10 @@
     <!-- user info-->
 
     <div class="user-info">
-        <img src="" alt="Profile Picture" class="profile-pic">
-        <h2 class="username">User Name</h2>
-        <p class="user-id">ID: 112255</p>
-         <button class="edit-info">edit</button>
+        <h2 class="username">{{profile}}</h2>
     </div>
+
+
 
     <!-- User's guilds -->
     <div class="user-guilds">
@@ -24,41 +23,25 @@
             <div class="guild-card">
                 <h4>Guild 1</h4>
             </div>
-            <div class="guild-card">
-                <h4>Guild 2</h4>
-            </div>
         </div>
     </div>
 
 
     <!-- user posts-->
 
-
-
-
-
 <div class="posts-container">
     <h3 class="profile_sectionhead">Posts</h3>
+    {% for post in data%}
     <div class="post-card">
-        <h2> <a href="#profile" class="link-to-profile">Post author name</a></h2>
-        <p class="post-date"> sample date: 04.23.2004</p>
-        <p class="post-content">This is a sample post content.</p>
+        <h2> <a href="#profile" class="link-to-profile">{{post.username}}</a></h2>
+        <p class="post-date"> Created on {{ post.creationDate|slice:":4" }}/{{ post.creationDate|slice:"5:7" }}/{{ post.creationDate|slice:"8:10" }}</p>
+        <p class="post-content">{{post.text}}</p>
         <div class="post-links">
-            <a href="#like" class="like-btn">Like</a>
-            <a href="#comment" class="comment-btn">Comment</a>
+            <!-- <a href="#like" class="like-btn">Like</a> -->
+            <!-- <a href="#comment" class="comment-btn">Comment</a> -->
         </div>
     </div>
-
-    <div class="post-card">
-        <h2> <a href="#profile" class="link-to-profile">Post author name</a></h2>
-        <p class="post-date"> sample date: 04.23.2004</p>
-        <p class="post-content">This is a sample post content.</p>
-        <div class="post-links">
-            <a href="#like" class="like-btn">Like</a>
-            <a href="#comment" class="comment-btn">Comment</a>
-        </div>
-    </div>
-
+    {%endfor%}
 </div>
 
 <!--end original content here-->

@@ -1,5 +1,6 @@
 from flask import Flask, request, abort, jsonify
 from markupsafe import escape
+from django.utils import timezone
 from MessageDatabase import *
 from datetime import datetime
 # from User import *
@@ -114,7 +115,7 @@ def join_guild():
 
 
 @app.route("/search/country")
-def countrySearch(): 
+def countrySearch():
     key = request.headers.get("X-API-KEY") or request.args.get("key")
     security_check(key)
     guildname = request.args.get("guildname")
@@ -136,7 +137,7 @@ def countrySearch():
     return jsonify(data)
 
 @app.route("/search/state")
-def stateSearch(): 
+def stateSearch():
     key = request.headers.get("X-API-KEY") or request.args.get("key")
     security_check(key)
     guildname = request.args.get("guildname")
@@ -158,7 +159,7 @@ def stateSearch():
     return jsonify(data)
 
 @app.route("/search/city")
-def citySearch(): 
+def citySearch():
     key = request.headers.get("X-API-KEY") or request.args.get("key")
     security_check(key)
     guildname = request.args.get("guildname")
@@ -249,7 +250,7 @@ def GuildProfilePage():
                 "name": r[1],
                 "text": r[2],
                 "pictureID": r[3],
-                "creationDate": r[4],
+                "creationDate": timezone.make_aware(datetime.fromisoformat(r[4])),
                 "likes": r[5],
             }
             for r in rows
@@ -305,7 +306,7 @@ def guild_from_user():
     return jsonify(data)
 
 
-    
+
 
 # @app.route("/<appropriate_url>")
 # def <function_name>():

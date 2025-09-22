@@ -21,8 +21,13 @@
             {% endif %}
             <a class="nav-link" href="{% url 'index' %}">Home</a>
             <a class="nav-link" href="{% url 'guild' %}">Guild</a>
+<<<<<<< HEAD
             <a class="nav-link" href="{% url 'profile' %}">Profile</a>
             <a class="nav-link" href="{% url 'messages' %}">Search</a>
+=======
+            <a class="nav-link" href="{% url 'profile' request.session.userid%}">Profile</a>
+            <a class="nav-link" href="{% url 'messages' %}">Messages</a>
+>>>>>>> 35b01596560f31b4188a8339bd2d9f9cf015052a
 
         </div>
     </nav>

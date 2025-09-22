@@ -59,8 +59,18 @@ def register(request):
             return redirect('signin')
     return render(request ,"register.html", context)
 
-def profile_view(request):
-    return render(request ,"profile.html")
+def profile_view(request, username):
+    urlparams = {
+        "key" : API_KEY,
+        "username" : username
+    }
+    username = username
+    response = requests.get(baseurl+f"/user/profile?{urlencode(urlparams)}")
+    data = response.json()
+    print(data)
+    if data == []:
+        return redirect('index')
+    return render(request ,"profile.html", {"data" : data, 'profile': username})
 
 def post_create(request):
     context = {}

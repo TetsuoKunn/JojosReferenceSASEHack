@@ -235,7 +235,7 @@ class DatabaseHelper:
         Creates a new post in the Posts table.
         """
         self.run.execute("""
-            INSERT INTO Posts (username, guildName, text, creationDate, pictureID)
+            INSERT INTO Posts (username, name, text, creationDate, pictureID)
             VALUES (?, ?, ?, ?, ?)
         """, (username, guildName, text, creationDate, pictureID))
         self.mydb.commit()

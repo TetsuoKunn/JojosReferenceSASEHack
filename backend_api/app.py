@@ -93,6 +93,52 @@ def guild_create():
     return jsonify(data)
 
 
+@app.route("/user/joinguild")
+def join_guild(): 
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key)
+    username = request.args.get("username")
+    guildName = request.args.get("guildname")
+    creationDate = datetime.now()
+    try: 
+        db.joinGuild(username, guildName, creationDate)
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    data = {}
+    return jsonify(data)
+
+
+@app.route("/guild/allusers")
+def showAllUsers(): 
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key) 
+    guildname = request.args.get("guildname")
+    try:
+        rows = db.getAllUsersInGuild(guildname)
+
+        data = [
+            {
+                "username": r[0],
+                "firstname": r[1],
+                "lastname": r[2],
+                "role": r[3],
+                "datejoined": r[4],
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    return jsonify(data)
+
+
 @app.route("/user/profile")
 def UserProfilePage(): 
     key = request.headers.get("X-API-KEY") or request.args.get("key")
@@ -120,7 +166,7 @@ def UserProfilePage():
         return jsonify(data)
     return jsonify(data)
 
-
+@app.route("/guild/profile")
 def GuildProfilePage(): 
     key = request.headers.get("X-API-KEY") or request.args.get("key")
     security_check(key) 

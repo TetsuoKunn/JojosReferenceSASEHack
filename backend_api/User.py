@@ -1,9 +1,22 @@
+from Role import Role
+from Post import Post
 
 class User: 
-    def __init__(self, username, password, role = "Normal"):
+    def __init__(self, user_id, username, password, roles=None):
+        self.user_id = user_id
         self.username = username
         self.password = password
-        self.role = role
+
+        if roles is None:
+            self.roles = ["Normal"]
+        else:
+            self.roles = roles
+
+        self.posts = []
+
+
+    def getUserID(self):
+        return self.user_id
 
 
     def getUsername(self):
@@ -14,8 +27,11 @@ class User:
         return self.password
     
 
-    def getRole(self):
-        return self.role
+    def getRoles(self):
+        return self.roles
+    
+    def getPosts(self):
+        return self.posts
     
 
     def setUsername(self, username):

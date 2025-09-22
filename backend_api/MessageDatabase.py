@@ -248,6 +248,32 @@ class DatabaseHelper:
         self.run.execute(f"UPDATE Posts SET likes = likes + 1 WHERE postID = ?", (postID, ))
         self.mydb.commit()
 
+     
+    def newComment(self, username, text, postID, creationDate):
+        """
+        Allows you to make new comments on a post. 
+        """
+        self.run.execute("""
+            INSERT INTO Comments (username, text, postID, creationDate)
+            VALUES (?, ?, ?, ?)          
+        """, (username, text, postID, creationDate))
+        self.mydb.commit()
+
+
+    def getAllComments(self, postID):
+        """
+        Shows all comments under a post. 
+        """
+        self.run.execute("""
+           SELECT username, text, creationDate
+            FROM Comments      
+            WHERE postID = ?         
+        """, (postID))
+
+        comments = self.run.fetchall()
+
+        return comments
+
 
     def getAllPostsUser(self, username):
         """

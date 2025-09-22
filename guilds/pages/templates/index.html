@@ -2,8 +2,10 @@
 
 {% block content %}
 <!--start original content here-->
-
-<h1>Home</h1>
+<div class="home-head-panel">
+    <h1>Home</h1>
+    <button class="add-post">+</button>
+</div>
 <h2><div id="hello">Welcome {{ request.session.userid }}</div>
 </h2>
 <div class="posts-container">

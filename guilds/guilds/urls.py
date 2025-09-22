@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from pages.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,10 +28,10 @@ urlpatterns = [
     path('profile/', profile_view, name="profile"),
     path("guild/", guild_view, name="guild"),
     path("post/", post_view, name="post"),
+    path("post/create", post_create, name="post_create"),
     path("guild/create/", guild_creation_view, name="guild_create"),
     path("guild/user/", guild_user_view, name="guild_user"),
     path("guild/user/owner/", guild_user_owner_view, name="guild_user_owner"),
     path("messages/", messaging_view, name="messages"),
     path("message/", message_view, name="message"),
-
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

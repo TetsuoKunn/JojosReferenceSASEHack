@@ -19,6 +19,8 @@ def index(request):
 
 def signin(request):
     context = {}
+    if request.session.get("userid") != None:
+        return redirect('index')
     if request.method == "POST":
         userid = request.POST.get("userid")
         context["userid_memory"] = userid

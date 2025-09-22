@@ -4,9 +4,8 @@
 <!--start original content here-->
 
 <h1>Home</h1>
-<div id="hello">Welcome</div>
-
-
+<h2><div id="hello">Welcome {{ request.session.userid }}</div>
+</h2>
 <div class="posts-container">
     <div class="post-card">
         <h2>Post Title 1</h2>
@@ -27,5 +26,5 @@
             <a href="#comment" class="comment-btn">Comment</a>
         </div>
     </div
-<!--end original content here-->
+ <!-- end original content here-->
 {% endblock %}

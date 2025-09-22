@@ -86,6 +86,20 @@ h1 {
   margin-top: 5%;
 }
 
+.menu input[type="submit"] {
+background: rgb(201, 235, 201);
+border: 1px solid green;
+width: 150px;
+max-width: 200px;
+margin: 5px;
+padding: 15px;
+border-radius: 8px;
+font-size: 1.5rem;
+}
+
+.menu input[type="submit"]:hover {
+  background: white;
+}
 
 
 
@@ -110,6 +124,29 @@ h1 {
 
 
 /*guild cards*/
+
+.guild-head-panel {
+    display: flex;            
+    align-items: center;       
+    justify-content: space-between;  
+    margin-bottom: 20px;
+
+}
+.add-guild {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ffdd93;
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin-right: 50px;
+}
+.add-guild:hover {
+    transform: scale(1.2);
+    background-color: orange;
+}
 
 .guild-container {
   display: flex;
@@ -157,17 +194,17 @@ h1 {
   font-size: 1em;
   padding: 10px 20px;
   border-radius: 5px;
-  color: white;
-  background-color: midnightblue;
+  color: rgb(255, 243, 243);
+  background-color: rgb(140, 210, 224);
   transition: background-color 0.3s ease;
 }
 
 .guild-cardlinks a:hover {
-  background-color: orangered;
+  background-color: rgb(42, 41, 87);
 }
 
 .guild-cardlinks a:active {
-  background-color: midnightblue;
+  background-color: rgb(251, 207, 192);
 }
 
 .guild-cardlinks a:focus {
@@ -175,7 +212,7 @@ h1 {
 }
 
 .guild-cardlinks a:visited {
-  color: crimson;
+  color: rgb(232, 251, 249);
 }
 
 /*profile */

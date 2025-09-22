@@ -164,6 +164,17 @@ class DatabaseHelper:
         self.run.execute("INSERT INTO Guild (name, username, creationDate, description, country, state, city) VALUES (?, ?, ?, ?, ?, ?, ?)", (guildName, username, creationDate, description, country, state, city))
         self.mydb.commit()
         self.updateRole(username, guildName, "Owner")
+        self.makeGuildConnection(guildName, username,"Owner", creationDate)
+    
+
+    def makeGuildConnection(self, guildName, username, role, datetime):
+        """
+        Function to update a connection between users and guild. 
+        """
+        self.run.execute("" \
+        "INSERT INTO GuildUserList (name, username, role, datejoined) " \
+        "VALUES (?, ?, ?, ? )", (guildName, username, role, datetime))
+        self.mydb.commit()
 
 
     def getAllUsersInGuild(self, guildName):
@@ -176,7 +187,7 @@ class DatabaseHelper:
             FROM GuildUserList gul
             INNER JOIN Users u ON gul.username = u.username
             WHERE gul.name = ?
-            """, (guildName))
+            """, (guildName,))
         users = self.run.fetchall()
 
         return users
@@ -191,7 +202,7 @@ class DatabaseHelper:
             SELECT name, description
             FROM Guild
             WHERE country = ?
-            """, (country)
+            """, (country,)
         )
         guilds = self.run.fetchall()
 
@@ -207,7 +218,7 @@ class DatabaseHelper:
             SELECT name, description
             FROM Guild
             WHERE state = ?
-            """, (state)
+            """, (state,)
         )
         guilds = self.run.fetchall()
 
@@ -223,7 +234,7 @@ class DatabaseHelper:
             SELECT name, description
             FROM Guild
             WHERE city = ?
-            """, (city)
+            """, (city,)
         )
         guilds = self.run.fetchall()
 
@@ -268,7 +279,7 @@ class DatabaseHelper:
            SELECT username, text, creationDate
             FROM Comments      
             WHERE postID = ?         
-        """, (postID))
+        """, (postID,))
 
         comments = self.run.fetchall()
 
@@ -283,7 +294,7 @@ class DatabaseHelper:
             SELECT postID, username, text, pictureID, creationDate, likes
             FROM Posts
             WHERE username = ?
-        """, (username))
+        """, (username,))
         posts = self.run.fetchall()
 
         return posts
@@ -297,7 +308,7 @@ class DatabaseHelper:
             SELECT postID, name, text, pictureID, creationDate, likes
             FROM Posts
             WHERE name = ?
-        """, (guildName))
+        """, (guildName,))
         posts = self.run.fetchall()
 
         return posts
@@ -337,7 +348,7 @@ class DatabaseHelper:
             SELECT name
             FROM GuildUserList
             WHERE username = ?
-        """, (user))
+        """, (user,))
         guilds = self.run.fetchall()
 
         return guilds

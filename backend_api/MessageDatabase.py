@@ -303,6 +303,19 @@ class DatabaseHelper:
 
         self.mydb.commit()
 
+    def getGuildsfromUser(self, user):
+        """
+        gets all the guilds a user has joined
+        """
+        self.run.execute("""
+            SELECT name
+            FROM GuildUserList
+            WHERE username = ?
+        """, (user))
+        guilds = self.run.fetchall()
+
+        return guilds
+
 
     def getConversations(self, user1):
         """

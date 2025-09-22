@@ -64,6 +64,7 @@ def post_create(request):
     context = {}
     if request.session.get("userid") == None:
         return redirect('signin')
+
     context = {}
     if request.method == "POST":
         text = request.POST.get("text")

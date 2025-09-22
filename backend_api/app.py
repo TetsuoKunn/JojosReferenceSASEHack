@@ -94,13 +94,13 @@ def guild_create():
 
 
 @app.route("/user/joinguild")
-def join_guild(): 
+def join_guild():
     key = request.headers.get("X-API-KEY") or request.args.get("key")
     security_check(key)
     username = request.args.get("username")
     guildName = request.args.get("guildname")
     creationDate = datetime.now()
-    try: 
+    try:
         db.joinGuild(username, guildName, creationDate)
     except Exception as e:
         data = {
@@ -113,9 +113,9 @@ def join_guild():
 
 
 @app.route("/guild/allusers")
-def showAllUsers(): 
+def showAllUsers():
     key = request.headers.get("X-API-KEY") or request.args.get("key")
-    security_check(key) 
+    security_check(key)
     guildname = request.args.get("guildname")
     try:
         rows = db.getAllUsersInGuild(guildname)
@@ -206,6 +206,26 @@ def post_create():
     text = request.args.get("text")
     try:
         db.newPost(username, guildName, text, creationDate, pictureID)
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    data = {}
+    return jsonify(data)
+
+@app.route("/guild_from_user")
+def guild_from_user():
+    data = {}
+    key = request.args.get("key")
+    security_check(key)
+    username = request.args.get("username")
+    try:
+        guilds = db.getGuildsfromUser(username)
+        print(type(guilds))
+        guilds_json = [{"id": g[0], "name": g[1]} for g in guilds]
+        data = {"guilds": guilds_json}
     except Exception as e:
         data = {
             "error": str(e),

@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from pages.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,5 +34,4 @@ urlpatterns = [
     path("guild/user/owner/", guild_user_owner_view, name="guild_user_owner"),
     path("messages/", messaging_view, name="messages"),
     path("message/", message_view, name="message"),
-
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

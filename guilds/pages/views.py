@@ -4,6 +4,10 @@ from datetime import timedelta
 from guilds.settings import API_KEY
 from django.utils import timezone
 import hashlib
+import os
+import uuid
+from django.conf import settings
+from django.core.files.storage import default_storage
 import requests
 from urllib.parse import urlencode
 
@@ -63,20 +67,22 @@ def post_create(request):
     context = {}
     if request.method == "POST":
         text = request.POST.get("text")
-        pic = request.POST.get("pic")
         guild = request.POST.get("guild")
         urlparams = {
             "key" : API_KEY,
             "text" : text,
             "username" : request.session.get("userid")
         }
-        if pic != "":
-            urlparams["picture"] = pic
         if guild != "None":
             urlparams["guildname"] = guild
-
-
-        print(urlparams)
+        response = requests.get(baseurl+f"/post/create?{urlencode(urlparams)}")
+        response.raise_for_status() # Raise an exception for bad status codes (4xx or 5xx)
+        data = response.json()
+        if data.get("error"):
+            print(data.get("error"))
+            return render(request ,"post_create.html", context)
+        else:
+            return redirect('index')
     return render(request, "post_create.html",context)
 
 def guild_view(request):

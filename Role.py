@@ -6,7 +6,7 @@ class Role:
     def __init__(self, name, description="", requirements=None, permissions=None):
         # Generate role_id based on timestamp (with microseconds to avoid duplicates)
         self.creation_date = datetime.now()
-        self.role_id = self.creation_date.strftime("%Y%m%d%H%M%S%f")
+        # self.role_id = self.creation_date.strftime("%Y%m%d%H%M%S%f")
 
         self.name = name
         self.description = description
@@ -28,8 +28,8 @@ class Role:
     # ----
     # Getters
     # ----
-    def get_role_id(self):
-        return self.role_id
+    # def get_role_id(self):
+    #     return self.role_id
 
 
     def get_name(self):
@@ -127,7 +127,7 @@ class Role:
 
         role_dict = {}
 
-        role_dict["role_id"] = self.role_id
+        # role_dict["role_id"] = self.role_id
         role_dict["name"] = self.name
         role_dict["description"] = self.description
         role_dict["requirements"] = self.requirements

@@ -166,7 +166,7 @@ class Guild:
     # Delete
     # ----
     def delete_roles(self, role_names: list[str]):
-        """Delete certain roles and strip them from all members."""
+        """Delete certain roles from guild and strip them from all members."""
 
         # Remove roles from guild's role list
         updated_roles = []
@@ -175,7 +175,7 @@ class Guild:
                 updated_roles.append(role)
         self.roles = updated_roles
 
-        # Remove roles from each member
+        # Remove roles from each member's role list
         for member in self.members:
             updated_member_roles = []
             for role in member.roles:
@@ -185,9 +185,9 @@ class Guild:
 
 
     def delete_members_by_roles(self, role_names: list[str]):
-        """Remove members entirely if they have any of the given roles.
-        Also clean up their posts by clearing guild_id.
-        """
+        """Delete members (from guild's member list) who have any of the given roles.
+        Their roles are cleared before removal, and their posts are detached
+        from the guild."""
 
         user_ids_to_delete = set()
         updated_members = []
@@ -203,6 +203,7 @@ class Guild:
 
             # Decide whether to remove or keep this member
             if has_forbidden_role:
+                member.roles = [] 
                 user_ids_to_delete.add(member.user_id)
             else:
                 updated_members.append(member)
@@ -210,16 +211,16 @@ class Guild:
         # Clean up posts by affected members
         for post in self.posts:
             if post.user_id in user_ids_to_delete:
-                post.set_guild_id(-1)
+                post.delete_guild_id()
 
         # Update the guild’s member list
         self.members = updated_members
 
 
     def delete_members_by_user_ids(self, users: list[User]):
-        """Delete members from the guild by matching user IDs of given User objects.
-        Also clean up their posts by setting guild_id=-1.
-        """
+        """Delete members whose user IDs match the given User objects.
+        Their roles are cleared automatically by removing the member object,
+        and their posts are detached from the guild."""
 
         user_ids_to_delete = set()
 
@@ -237,14 +238,15 @@ class Guild:
         # Clean up posts by affected members
         for post in self.posts:
             if post.user_id in user_ids_to_delete:
-                post.set_guild_id(-1)
+                post.delete_guild_id()
 
         # Update the guild’s member list
         self.members = updated_members
 
     
     def delete_posts_by_members(self, members: list[User]):
-        """Delete all posts belonging to certain members (by user_id)."""
+        """Delete all posts belonging to certain members (by user_id).
+        Posts are detached from the guild."""
 
         user_ids = []
         for member in members:
@@ -255,27 +257,31 @@ class Guild:
             if post.user_id not in user_ids:
                 updated_posts.append(post)
             else:
-                post.set_guild_id(-1)
+                post.delete_guild_id()
 
         self.posts = updated_posts
 
 
     def delete_all_members(self):
-        """Delete all members in the guild.
-        Also clean up posts by clearing guild_id for all posts.
-        """
+        """Delete all members from the guild.
+        Their roles are cleared before removal, and their posts are detached
+        from the guild."""
+
+        for member in self.members:
+            member.roles = []
 
         for post in self.posts:
-            post.set_guild_id(-1)
+            post.delete_guild_id(-1)
 
         self.members = []
 
 
     def delete_all_posts(self):
-        """Delete all posts in the guild and clear their guild_id."""
+        """Delete all posts in the guild and clear their guild_id.
+        Posts are detached from the guild before removal."""
 
         for post in self.posts:
-            post.set_guild_id(-1)
+            post.delete_guild_id()
 
         self.posts = []
 

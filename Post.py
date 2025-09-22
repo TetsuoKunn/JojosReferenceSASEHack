@@ -71,7 +71,12 @@ class Post:
         self.user_id = None
 
 
+    def delete_post_id(self):
+        self.post_id = None
+
+
     def delete_guild_id(self):
+        """Posts are still stored in the system, but they no longer belong to this guild"""
         self.guild_id = -1
 
 

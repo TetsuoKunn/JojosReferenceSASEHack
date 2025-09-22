@@ -70,6 +70,7 @@ def login():
         data = {}
     return jsonify(data)
 
+
 @app.route("/guild/register")
 def guild_create():
     key = request.headers.get("X-API-KEY") or request.args.get("key")
@@ -109,6 +110,73 @@ def join_guild():
         }
         return jsonify(data)
     data = {}
+    return jsonify(data)
+
+
+@app.route("/search/country")
+def countrySearch(): 
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key)
+    guildname = request.args.get("guildname")
+    try:
+        rows = db.getAllGuildsCountry(guildname)
+        data = [
+            {
+                "name": r[0],
+                "description": r[1],
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    return jsonify(data)
+
+@app.route("/search/state")
+def stateSearch(): 
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key)
+    guildname = request.args.get("guildname")
+    try:
+        rows = db.getAllGuildsState(guildname)
+        data = [
+            {
+                "name": r[0],
+                "description": r[1],
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
+    return jsonify(data)
+
+@app.route("/search/city")
+def citySearch(): 
+    key = request.headers.get("X-API-KEY") or request.args.get("key")
+    security_check(key)
+    guildname = request.args.get("guildname")
+    try:
+        rows = db.getAllGuildsCity(guildname)
+        data = [
+            {
+                "name": r[0],
+                "description": r[1],
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        data = {
+            "error": str(e),
+            "type": e.__class__.__name__
+        }
+        return jsonify(data)
     return jsonify(data)
 
 
@@ -165,6 +233,7 @@ def UserProfilePage():
         }
         return jsonify(data)
     return jsonify(data)
+
 
 @app.route("/guild/profile")
 def GuildProfilePage():
@@ -234,6 +303,9 @@ def guild_from_user():
         return jsonify(data)
     data = {}
     return jsonify(data)
+
+
+    
 
 # @app.route("/<appropriate_url>")
 # def <function_name>():

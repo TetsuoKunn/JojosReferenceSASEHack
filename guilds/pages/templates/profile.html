@@ -20,9 +20,11 @@
     <div class="user-guilds">
         <h3 class="profile_sectionhead">Your Guilds</h3>
         <div class="guilds-list">
+            {% for guild in guilds.guilds%}
             <div class="guild-card">
-                <h4>Guild 1</h4>
+                <h4 href>{{guild.name}}</h4>
             </div>
+            {%endfor%}
         </div>
     </div>
 

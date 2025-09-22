@@ -67,10 +67,13 @@ def profile_view(request, username):
     username = username
     response = requests.get(baseurl+f"/user/profile?{urlencode(urlparams)}")
     data = response.json()
-    print(data)
     if data == []:
         return redirect('index')
-    return render(request ,"profile.html", {"data" : data, 'profile': username})
+    response1 = requests.get(baseurl+f"/guild_from_user?{urlencode(urlparams)}")
+    data1 = response1.json()
+    if data1 == []:
+        return redirect('index')
+    return render(request ,"profile.html", {"data" : data, 'profile': username, "guilds": data1})
 
 def post_create(request):
     context = {}
@@ -98,8 +101,17 @@ def post_create(request):
             return redirect('index')
     return render(request, "post_create.html",context)
 
-def guild_view(request):
-    return render(request ,"guild.html")
+def guild_view(request, guildname):
+    urlparams = {
+        "key" : API_KEY,
+        "username" : guildname
+    }
+    guildname = guildname
+    response = requests.get(baseurl+f"/guild/profile?{urlencode(urlparams)}")
+    data = response.json()
+    if data == []:
+        return redirect('index')
+    return render(request ,"guild.html",  {"data" : data, 'profile': guildname,})
 
 def post_view(request):
     return render(request ,"post.html")

@@ -165,11 +165,11 @@ class DatabaseHelper:
         self.mydb.commit()
         self.updateRole(username, guildName, "Owner")
         self.makeGuildConnection(guildName, username,"Owner", creationDate)
-    
+
 
     def makeGuildConnection(self, guildName, username, role, datetime):
         """
-        Function to update a connection between users and guild. 
+        Function to update a connection between users and guild.
         """
         self.run.execute("" \
         "INSERT INTO GuildUserList (name, username, role, datejoined) " \
@@ -259,26 +259,26 @@ class DatabaseHelper:
         self.run.execute(f"UPDATE Posts SET likes = likes + 1 WHERE postID = ?", (postID, ))
         self.mydb.commit()
 
-     
+
     def newComment(self, username, text, postID, creationDate):
         """
-        Allows you to make new comments on a post. 
+        Allows you to make new comments on a post.
         """
         self.run.execute("""
             INSERT INTO Comments (username, text, postID, creationDate)
-            VALUES (?, ?, ?, ?)          
+            VALUES (?, ?, ?, ?)
         """, (username, text, postID, creationDate))
         self.mydb.commit()
 
 
     def getAllComments(self, postID):
         """
-        Shows all comments under a post. 
+        Shows all comments under a post.
         """
         self.run.execute("""
            SELECT username, text, creationDate
-            FROM Comments      
-            WHERE postID = ?         
+            FROM Comments
+            WHERE postID = ?
         """, (postID,))
 
         comments = self.run.fetchall()

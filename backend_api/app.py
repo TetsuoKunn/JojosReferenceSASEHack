@@ -242,7 +242,7 @@ def GuildProfilePage():
     security_check(key)
     guildname = request.args.get("guildname")
     try:
-        rows = db.getAllPostsUser(guildname)
+        rows = db.getAllPostsGuild(guildname)
 
         data = [
             {
@@ -293,8 +293,7 @@ def guild_from_user():
     username = request.args.get("username")
     try:
         guilds = db.getGuildsfromUser(username)
-        print(type(guilds))
-        guilds_json = [{"id": g[0], "name": g[1]} for g in guilds]
+        guilds_json = [{"name": g[0], } for g in guilds]
         data = {"guilds": guilds_json}
     except Exception as e:
         data = {
@@ -302,7 +301,6 @@ def guild_from_user():
             "type": e.__class__.__name__
         }
         return jsonify(data)
-    data = {}
     return jsonify(data)
 
 
